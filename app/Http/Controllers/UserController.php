@@ -2,70 +2,101 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function index()
-    {
-        $users = User::all();
-        return view('users.index', compact('users'));
-    }
-
-    public function create()
-    {
-        return view('users.create');
-    }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'username' => 'required|max:45|unique:users',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
-            'rol' => 'required|integer',
+        
+        $request->validate([
+            'username' => 'required|string|max:255',
+            'email' => 'required|email|unique:users|max:255',
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
-        $validated['password'] = bcrypt($validated['password']);
-        User::create($validated);
+        try {
+            $user = new User();
+            $user->name = $request->input('username');
+            $user->email = $request->input('email');
+            $user->password = Hash::make($request->input('password'));
+            $user->rol = 1;
+            $user->save();
 
-        return redirect()->route('users.index')->with('success', 'Usuario creado correctamente.');
+            return redirect()->route('login')->with('success', 'Registro exitoso. Por favor, inicia sesión.');
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Manejar errores específicos de la base de datos
+            return redirect()->route('login')->withErrors(['error' => 'Error al crear el usuario. Por favor, verifica los datos e inténtalo nuevamente.'])->withInput();
+        } catch (\Exception $e) {
+            // Manejar otros tipos de errores
+            return redirect()->route('login')->withErrors(['error' => 'Error inesperado. Por favor, intenta nuevamente.'])->withInput();
+        }
     }
 
-    public function show(User $user)
+    public function mostrarUsuario()
     {
-        return view('users.show', compact('user'));
+        $usuarios = User::all();
+        return view('usuario', ['usuarios' => $usuarios]);
     }
-
-    public function edit(User $user)
+    public function mostrarModificar($id)
     {
-        return view('users.edit', compact('user'));
+        // Obtener los datos del médico con el ID proporcionado
+        $usuario = User::findOrFail($id);
+
+
+        return view('usuarioModificar', ['usuario' => $usuario]);
     }
-
-    public function update(Request $request, User $user)
+    public function actualizar(Request $request, $id)
     {
-        $validated = $request->validate([
-            'username' => 'required|max:45|unique:users,username,' . $user->idusuarios,
-            'email' => 'required|email|unique:users,email,' . $user->idusuarios,
-            'password' => 'nullable|min:6',
-            'rol' => 'required|integer',
-        ]);
+        $usuario = User::find($id);
 
-        if ($request->filled('password')) {
-            $validated['password'] = bcrypt($validated['password']);
-        } else {
-            unset($validated['password']);
+        if (!$usuario) {
+            return redirect()->route('usuario')->with('error', 'Usuario no encontrado');
         }
 
-        $user->update($validated);
+        try {
+            if ($request->filled('Contraseña')) {
+                // Si se proporcionó una nueva contraseña, la actualizamos
+                $usuario->password = Hash::make($request->input('Contraseña'));
+            }
 
-        return redirect()->route('users.index')->with('success', 'Usuario actualizado correctamente.');
-    }
 
-    public function destroy(User $user)
-    {
-        $user->delete();
-        return redirect()->route('users.index')->with('success', 'Usuario eliminado correctamente.');
+
+            $usuario->name = $request->input('usuario');
+            $usuario->email = $request->input('email');
+            $usuario->rol = $request->input('rol');
+
+            $usuario->save();
+
+            return redirect()->route('usuario')->with('success', 'Modificación exitosa.');
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Manejar errores específicos de la base de datos
+            return redirect()->route('usuario')->withErrors(['error' => 'Error al modificar el usuario. Por favor, verifica los datos e inténtalo nuevamente.'])->withInput();
+        } catch (\Exception $e) {
+            // Manejar otros tipos de errores
+            return redirect()->route('usuario')->withErrors(['error' => 'Error inesperado. Por favor, intenta nuevamente.'])->withInput();
+        }
     }
+    // public function eliminar($id) no se puede eliminar usuarios por la integridad del sistema
+    // {
+    //     try {
+    //         // Buscar el usuario por ID
+    //         $usuario = User::findOrFail($id);
+
+    //         // Eliminar el usuario
+    //         $usuario->delete();
+
+    //         return redirect()->route('usuario')->with('success', 'Usuario eliminado correctamente.');
+    //     } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+    //         // Manejar el caso en el que el usuario no se encuentra
+    //         return redirect()->route('usuario')->with('error', 'Usuario no encontrado.');
+    //     } catch (\Exception $e) {
+    //         // Manejar cualquier otra excepción
+    //         return redirect()->route('usuario')->with('error', 'Error al eliminar el usuario. Detalles: ' . $e->getMessage());
+    //     }
+    // }
 }
