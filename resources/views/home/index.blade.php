@@ -22,7 +22,7 @@
                             </blockquote>
                             <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
                                 {{-- <a href="{{ route('news.show', $ultimaNoticia->idnoticias) }}" class="btn-get-started">Leer
-                                    más</a> --}}
+                                    más</a> aqui va el link de la noticia --}}
                                 <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8"
                                     class="glightbox btn-watch-video d-flex align-items-center">
                                     <i class="bi bi-play-circle"></i><span>Watch Video</span>
@@ -342,7 +342,7 @@
 
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
-                <h2>Recent Blog Posts</h2>
+                <h2>Ultimas Noticias</h2>
 
             </div><!-- End Section Title -->
 
@@ -350,7 +350,7 @@
 
                 <div class="row gy-5">
 
-                    <div class="col-xl-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="col-xl-6 col-md-3" data-aos="fade-up" data-aos-delay="200">
                         <div class="post-box">
                             <div class="post-img"><img src="assets/img/blog/blog-1.jpg" class="img-fluid"
                                     alt=""></div>
@@ -366,7 +366,7 @@
                         </div>
                     </div>
 
-                    <div class="col-xl-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                    <div class="col-xl-6 col-md-3" data-aos="fade-up" data-aos-delay="400">
                         <div class="post-box">
                             <div class="post-img"><img src="assets/img/blog/blog-2.jpg" class="img-fluid"
                                     alt=""></div>
@@ -382,7 +382,7 @@
                         </div>
                     </div>
 
-                    <div class="col-xl-3 col-md-6" data-aos="fade-up" data-aos-delay="600">
+                    <div class="col-xl-6 col-md-3" data-aos="fade-up" data-aos-delay="600">
                         <div class="post-box">
                             <div class="post-img"><img src="assets/img/blog/blog-3.jpg" class="img-fluid"
                                     alt=""></div>
@@ -398,7 +398,7 @@
                         </div>
                     </div>
 
-                    <div class="col-xl-3 col-md-6" data-aos="fade-up" data-aos-delay="600">
+                    <div class="col-xl-6 col-md-3" data-aos="fade-up" data-aos-delay="600">
                         <div class="post-box">
                             <div class="post-img"><img src="assets/img/blog/blog-4.jpg" class="img-fluid"
                                     alt=""></div>
