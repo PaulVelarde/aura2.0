@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
@@ -13,5 +12,5 @@ class NoticiaHasTipo extends Pivot
         'tipo_id',
     ];
 
-    public $incrementing = false; // Para clave primaria compuesta
+    public $incrementing = false; // Clave primaria compuesta
 }

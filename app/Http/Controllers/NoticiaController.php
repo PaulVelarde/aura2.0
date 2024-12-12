@@ -3,21 +3,48 @@
 namespace App\Http\Controllers;
 
 use App\Models\Noticia;
+use App\Models\Tipo;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+
+
 
 class NoticiaController extends Controller
 {
-    public function index()
-    {
-        $noticias = Noticia::with('user')->get();
-        
-        return view('news.noticias', compact('noticias'));
+    // Muestra la lista de noticias con filtros
+    
+    public function index(Request $request)
+{
+    $query = $request->input('query');
+    $categoria = $request->input('categoria');
+
+    $noticias = Noticia::query()->with('tipos');
+
+    if ($query) {
+        $noticias->where('titular', 'like', '%' . $query . '%');
     }
+
+    if ($categoria) {
+        $noticias->whereHas('tipos', function ($q) use ($categoria) {
+            $q->where('nombre', $categoria);
+        });
+    }
+
+    $noticias = $noticias->paginate(5);
+
+    if ($request->ajax()) {
+        return view('partials.noticias', compact('noticias'))->render();
+    }
+
+    $tipos = Tipo::all();
+    return view('news.noticias', compact('noticias', 'tipos'));
+}
+
 
     public function create()
     {
-        $users = User::all();
+        $users = User::all(); // Obtener todos los usuarios
         return view('noticias.create', compact('users'));
     }
 
@@ -32,19 +59,27 @@ class NoticiaController extends Controller
             'usuario_id' => 'required|exists:users,idusuarios',
         ]);
 
-        Noticia::create($validated);
+        $noticia = Noticia::create($validated);
+
+        // Asignar tipos a la noticia
+        $noticia->tipos()->sync($request->tipos);
 
         return redirect()->route('noticias.index')->with('success', 'Noticia creada correctamente.');
     }
 
-    public function show(Noticia $noticia)
-    {
-        return view('noticias.show', compact('noticia'));
-    }
+    public function show($id)
+{
+    $noticia = Noticia::findOrFail($id);
 
+    // Verifica si es una instancia de Carbon
+   // dd($noticia->fecha);
+
+    return view('news.noticias_details', compact('noticia'));
+}
+    
     public function edit(Noticia $noticia)
     {
-        $users = User::all();
+        $users = User::all(); // Obtener todos los usuarios
         return view('noticias.edit', compact('noticia', 'users'));
     }
 
@@ -60,6 +95,9 @@ class NoticiaController extends Controller
         ]);
 
         $noticia->update($validated);
+
+        // Asignar tipos a la noticia
+        $noticia->tipos()->sync($request->tipos);
 
         return redirect()->route('noticias.index')->with('success', 'Noticia actualizada correctamente.');
     }

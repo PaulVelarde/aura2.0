@@ -11,7 +11,7 @@ class Noticia extends Model
 
     protected $table = 'noticias';
     protected $primaryKey = 'idnoticias';
-
+    protected $dates = ['fecha'];
     protected $fillable = [
         'titular',
         'contenido',
@@ -21,7 +21,6 @@ class Noticia extends Model
         'usuario_id',
     ];
 
-    // Relaciones
     public function user()
     {
         return $this->belongsTo(User::class, 'usuario_id', 'idusuarios');
@@ -32,4 +31,5 @@ class Noticia extends Model
         return $this->belongsToMany(Tipo::class, 'noticias_has_tipo', 'noticia_id', 'tipo_id');
     }
 }
+
 

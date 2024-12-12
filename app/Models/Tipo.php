@@ -17,14 +17,18 @@ class Tipo extends Model
         'detalle',
     ];
 
-    // Relaciones
-    public function noticias()
-    {
-        return $this->belongsToMany(Noticia::class, 'noticias_has_tipo', 'tipo_id', 'noticia_id');
-    }
+// Tipo.php
+public function noticias()
+{
+    return $this->belongsToMany(Noticia::class, 'noticias_has_tipo', 'tipo_id', 'noticia_id');
+}
+
 
     public function redesVideos()
     {
         return $this->hasMany(RedVideo::class, 'tipo_idtipo', 'idtipo');
     }
+    
 }
+
+
