@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
 
-
     public function index()
     {
         $ultimaNoticia = Noticia::latest('created_at')->first();
