@@ -14,5 +14,5 @@ use App\Http\Controllers\AdminPanelController;
 Route::get('/admin', [AdminPanelController::class, 'index'])->name('admin.index');
 
 // Rutas para la página de inicio
-Route::get('/', [HomeController::class, 'loadAndRedirect'])->name('loading');
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+//Route::get('/', [HomeController::class, 'loadAndRedirect'])->name('loading');
+Route::get('/', [HomeController::class, 'index'])->name('home');
