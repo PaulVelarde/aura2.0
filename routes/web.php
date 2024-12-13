@@ -37,3 +37,7 @@ Route::get('/landing', function () {
 Route::get('/login', function () { return view('login'); })->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Rutas para añadir noticias y videos
+Route::post('/news/store', [AuthController::class, 'storeNews'])->name('aura.store.news')->middleware('auth');
+Route::post('/video/store', [AuthController::class, 'storeVideo'])->name('aura.store.video')->middleware('auth');
