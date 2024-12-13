@@ -22,8 +22,9 @@
                                 <p>{{ Str::limit($ultimaNoticia->contenido, 150, '...') }}</p>
                             </blockquote>
                             <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
-                                {{-- <a href="{{ route('news.show', $ultimaNoticia->idnoticias) }}" class="btn-get-started">Leer
-                                    más</a> aqui va el link de la noticia --}}
+                                <a href="{{ route('noticias.show', $ultimaNoticia->idnoticias) }}" class="btn-get-started">
+                                    Quiere saber mas...
+                                </a>
                                 <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8"
                                     class="glightbox btn-watch-video d-flex align-items-center">
                                     <i class="bi bi-play-circle"></i><span>Watch Video</span>
@@ -39,238 +40,205 @@
 
         <!-- /Hero Section -->
         <!-- Recent Posts Section -->
-        <section id="recent-posts" class="recent-posts section">
+        <section id="recent-posts" class="recent-posts section" style="padding-top: 20px; padding-bottom: 20px;">
+            <div class="container section-title" data-aos="fade-up" style="margin-bottom: -15px;">
+                <h2>Últimas Noticias</h2>
+            </div><!-- End Section Title -->
 
-            <section id="recent-posts" class="recent-posts section">
-                <!-- Section Title -->
-                <div class="container section-title" data-aos="fade-up">
-                    <h2>Últimas Noticias</h2>
-                </div><!-- End Section Title -->
-
-                <section class="recent-posts">
-                    <div class="container">
-                        <!-- Filtro de Tipos -->
+            <section class="recent-posts">
+                <div class="container">
+                    <!-- Filtro de Tipos -->
 
 
-                        <!-- Contenedor de Noticias -->
-                        <div class="row gy-5" id="news-container">
-                            <!-- Columna de noticias (3/4 del espacio) -->
-                            <div class="col-md-9">
-                                <div class="mb-4">
-                                    <label for="news-type" class="form-label">Filtrar por tipo de noticia:</label>
-                                    <select id="news-type" class="form-select" onchange="filterNews()">
-                                        <option value="all" {{ $type === 'all' ? 'selected' : '' }}>Todos</option>
-                                        @foreach ($tipos as $tipo)
-                                            <option value="{{ $tipo->idtipo }}"
-                                                {{ $type == $tipo->idtipo ? 'selected' : '' }}>
-                                                {{ $tipo->nombre }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                @forelse ($ultimasNoticias as $noticia)
-                                    <div class="col-12 mb-4" data-aos="fade-up" data-aos-delay="200">
-                                        <div class="post-box border rounded shadow-sm">
-                                            <div class="row no-gutters">
-                                                <div class="col-md-3">
-                                                    <img src="assets/img/noticias/{{ $noticia->image }}"
-                                                        class="img-fluid rounded-left" alt="{{ $noticia->titular }}">
-                                                </div>
-                                                <div class="col-md-9">
-                                                    <div class="p-3">
-                                                        <h3 class="post-title">{{ $noticia->titular }}</h3>
-                                                        <p>{{ Str::limit($noticia->contenido, 100) }}</p>
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <a href="{{ route('noticias.show', $noticia->idnoticias) }}"
-                                                                class="btn btn-primary">Leer Más</a>
+                    <!-- Contenedor de Noticias -->
+                    <div class="row gy-5" id="news-container">
+                        <!-- Columna de noticias (3/4 del espacio) -->
+                        <div class="col-md-9">
+                            <div class="mb-4">
+                                <label for="news-type" class="form-label">Filtrar por tipo de noticia:</label>
+                                <select id="news-type" class="form-select" onchange="filterNews()">
+                                    <option value="all" {{ $type === 'all' ? 'selected' : '' }}>Todos</option>
+                                    @foreach ($tipos as $tipo)
+                                        <option value="{{ $tipo->idtipo }}" {{ $type == $tipo->idtipo ? 'selected' : '' }}>
+                                            {{ $tipo->nombre }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @forelse ($ultimasNoticias as $noticia)
+                                <div class="col-12 mb-4" data-aos="fade-up" data-aos-delay="200">
+                                    <div class="post-box border rounded shadow-sm">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-3">
+                                                <img src="assets/img/noticias/{{ $noticia->image }}"
+                                                    class="img-fluid rounded-left" alt="{{ $noticia->titular }}">
+                                            </div>
+                                            <div class="col-md-9">
+                                                <div class="p-3">
+                                                    <h3 class="post-title">{{ $noticia->titular }}</h3>
+                                                    <p>{{ Str::limit($noticia->contenido, 100) }}</p>
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <a href="{{ route('noticias.show', $noticia->idnoticias) }}"
+                                                            class="btn btn-primary">Leer Más</a>
 
-                                                            <!-- Enlaces para compartir en redes sociales -->
-                                                            <div class="social-share">
-                                                                <a href="https://twitter.com/intent/tweet?url={{ urlencode(route('noticias.show', $noticia->idnoticias)) }}&text={{ urlencode($noticia->titular) }}"
-                                                                    target="_blank" title="Compartir en Twitter">
-                                                                    <i class="bi bi-twitter"></i>
-                                                                </a>
-                                                                <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(route('noticias.show', $noticia->idnoticias)) }}"
-                                                                    target="_blank" title="Compartir en Facebook">
-                                                                    <i class="bi bi-facebook"></i>
-                                                                </a>
-                                                                <a href="https://www.instagram.com/?url={{ urlencode(route('noticias.show', $noticia->idnoticias)) }}"
-                                                                    target="_blank" title="Compartir en Instagram">
-                                                                    <i class="bi bi-instagram"></i>
-                                                                </a>
-                                                                <a href="https://wa.me/?text={{ urlencode(route('noticias.show', $noticia->idnoticias)) }}&amp;app_absent=0"
-                                                                    target="_blank" title="Compartir en WhatsApp">
-                                                                    <i class="bi bi-whatsapp"></i>
-                                                                </a>
-                                                                <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ urlencode(route('noticias.show', $noticia->idnoticias)) }}&title={{ urlencode($noticia->titular) }}"
-                                                                    target="_blank" title="Compartir en LinkedIn">
-                                                                    <i class="bi bi-linkedin"></i>
-                                                                </a>
-                                                            </div>
+                                                        <!-- Enlaces para compartir en redes sociales -->
+                                                        <div class="social-share">
+                                                            <a href="https://twitter.com/intent/tweet?url={{ urlencode(route('noticias.show', $noticia->idnoticias)) }}&text={{ urlencode($noticia->titular) }}"
+                                                                target="_blank" title="Compartir en Twitter">
+                                                                <i class="bi bi-twitter"></i>
+                                                            </a>
+                                                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(route('noticias.show', $noticia->idnoticias)) }}"
+                                                                target="_blank" title="Compartir en Facebook">
+                                                                <i class="bi bi-facebook"></i>
+                                                            </a>
+                                                            <a href="https://www.instagram.com/?url={{ urlencode(route('noticias.show', $noticia->idnoticias)) }}"
+                                                                target="_blank" title="Compartir en Instagram">
+                                                                <i class="bi bi-instagram"></i>
+                                                            </a>
+                                                            <a href="https://wa.me/?text={{ urlencode(route('noticias.show', $noticia->idnoticias)) }}&amp;app_absent=0"
+                                                                target="_blank" title="Compartir en WhatsApp">
+                                                                <i class="bi bi-whatsapp"></i>
+                                                            </a>
+                                                            <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ urlencode(route('noticias.show', $noticia->idnoticias)) }}&title={{ urlencode($noticia->titular) }}"
+                                                                target="_blank" title="Compartir en LinkedIn">
+                                                                <i class="bi bi-linkedin"></i>
+                                                            </a>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
-                                @empty
-                                    <p>No hay noticias disponibles para este filtro.</p>
-                                @endforelse
-                            </div>
-
-                            <!-- Columna de TikToks (1/4 del espacio) -->
-                            <div class="col-md-3">
-                                <div class="d-flex flex-column">
-                                    <h5>Últimos TikToks</h5>
-                                    <!-- Agregar los TikToks aquí -->
-
-                                    @foreach ($tikTokReels as $tiktok)
-                                        <div class="video-card shadow-sm rounded mb-4">
-                                            {!! $tiktok->url !!}
-
-
-                                        </div>
-                                    @endforeach
                                 </div>
 
-
-                            </div>
+                            @empty
+                                <p>No hay noticias disponibles para este filtro.</p>
+                            @endforelse
                         </div>
 
-                        <!-- Paginación -->
-                        <div class="mt-4">
-                            <div class="pagination justify-content-center">
-                                <ul class="pagination">
-                                    <!-- Botón de anterior -->
-                                    <li class="page-item {{ $ultimasNoticias->onFirstPage() ? 'disabled' : '' }}">
-                                        <a class="page-link" href="#"
-                                            onclick="loadPage('{{ $ultimasNoticias->previousPageUrl() }}'); return false;"
-                                            aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                    </li>
+                        <!-- Columna de TikToks (1/4 del espacio) -->
+                        <div class="col-md-3">
+                            <div class="d-flex flex-column">
+                                <h5>Últimos TikToks</h5>
+                                <!-- Agregar los TikToks aquí -->
 
-                                    <!-- Páginas individuales -->
-                                    @for ($i = 1; $i <= $ultimasNoticias->lastPage(); $i++)
-                                        <li class="page-item {{ $i == $ultimasNoticias->currentPage() ? 'active' : '' }}">
-                                            <a class="page-link" href="#"
-                                                onclick="loadPage('{{ $ultimasNoticias->url($i) }}'); return false;">{{ $i }}</a>
-                                        </li>
-                                    @endfor
+                                @foreach ($tikTokReels as $tiktok)
+                                    <div class="video-card shadow-sm rounded mb-4">
+                                        {!! $tiktok->url !!}
 
-                                    <!-- Botón de siguiente -->
-                                    <li class="page-item {{ $ultimasNoticias->hasMorePages() ? '' : 'disabled' }}">
-                                        <a class="page-link" href="#"
-                                            onclick="loadPage('{{ $ultimasNoticias->nextPageUrl() }}'); return false;"
-                                            aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                        </a>
-                                    </li>
-                                </ul>
+
+                                    </div>
+                                @endforeach
                             </div>
+
+
                         </div>
                     </div>
-                </section>
-            </section>
 
+                    <!-- Paginación -->
+                    <div class="mt-4">
+                        <div class="pagination justify-content-center">
+                            <ul class="pagination">
+                                <!-- Botón de anterior -->
+                                <li class="page-item {{ $ultimasNoticias->onFirstPage() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="#"
+                                        onclick="loadPage('{{ $ultimasNoticias->previousPageUrl() }}'); return false;"
+                                        aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
 
-            <!-- Why Us Section -->
-            <!-- Why Us Section -->
-            <section id="why-us" class="why-us section">
-                <div class="container">
-                    <div class="row g-0">
-                        <!-- Columna del Video -->
-                        <div class="col-xl-5 img-bg" data-aos="fade-up" data-aos-delay="100">
-                            <img src="assets/img/why-us-bg.jpg" alt="">
+                                <!-- Páginas individuales -->
+                                @for ($i = 1; $i <= $ultimasNoticias->lastPage(); $i++)
+                                    <li class="page-item {{ $i == $ultimasNoticias->currentPage() ? 'active' : '' }}">
+                                        <a class="page-link" href="#"
+                                            onclick="loadPage('{{ $ultimasNoticias->url($i) }}'); return false;">{{ $i }}</a>
+                                    </li>
+                                @endfor
+
+                                <!-- Botón de siguiente -->
+                                <li class="page-item {{ $ultimasNoticias->hasMorePages() ? '' : 'disabled' }}">
+                                    <a class="page-link" href="#"
+                                        onclick="loadPage('{{ $ultimasNoticias->nextPageUrl() }}'); return false;"
+                                        aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
-                        <!-- Columna de Noticias -->
-                        <div class="col-xl-7 slides position-relative" data-aos="fade-up" data-aos-delay="200">
+                    </div>
+                </div>
+            </section>
+        </section>
 
-                            <div class="swiper init-swiper">
-                                <script type="application/json" class="swiper-config">
-                    {
-                        "loop": true,
-                        "speed": 600,
-                        "autoplay": {
-                            "delay": 5000
-                        },
-                        "slidesPerView": "auto",
-                        "centeredSlides": true,
-                        "pagination": {
-                            "el": ".swiper-pagination",
-                            "type": "bullets",
-                            "clickable": true
-                        },
-                        "navigation": {
-                            "nextEl": ".swiper-button-next",
-                            "prevEl": ".swiper-button-prev"
+
+        <!-- Why Us Section -->
+        <!-- Why Us Section -->
+
+
+        {{-- <-- /Why Us Section --> --}}
+
+
+        <section id="news-carousel" class="news-carousel section">
+            <!-- Section Title -->
+            <div class="container section-title" data-aos="fade-up">
+                <h2>Últimas Noticias de Facebook</h2>
+                <p>Explora los últimos videos publicados en nuestra página de Facebook.</p>
+            </div><!-- End Section Title -->
+
+            <div class="container" data-aos="fade-up" data-aos-delay="100">
+                <div class="swiper init-swiper">
+                    <script type="application/json" class="swiper-config">
+                        {
+                            "loop": true,
+                            "speed": 600,
+                            "slidesPerView": "auto",
+                            "pagination": {
+                                "el": ".swiper-pagination",
+                                "type": "bullets",
+                                "clickable": true
+                            },
+                            "navigation": {
+                                "nextEl": ".swiper-button-next",
+                                "prevEl": ".swiper-button-prev"
+                            },
+                            "breakpoints": {
+                                "320": {
+                                    "slidesPerView": 1,
+                                    "spaceBetween": 20
+                                },
+                                "768": {
+                                    "slidesPerView": 2,
+                                    "spaceBetween": 20
+                                },
+                                "1200": {
+                                    "slidesPerView": 3,
+                                    "spaceBetween": 30
+                                }
+                            }
                         }
-                    }
-                    </script>
-                                <div class="swiper-wrapper">
-                                    <div class="swiper-slide">
-                                        <div class="item">
-                                            <iframe width="100%" height="315"
-                                                src="https://www.youtube.com/embed/X_d8gwqNJ0o?si=Zvz-hfqya0uoiXMB"
-                                                title="YouTube video player" frameborder="0"
-                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                                        </div>
-                                    </div><!-- End slide item -->
-                                    <div class="swiper-slide">
-                                        <div class="item">
-                                            <h3 class="mb-3">Otra Noticia Relevante</h3>
-                                            <iframe width="100%" height="315"
-                                                src="https://www.youtube.com/embed/X_d8gwqNJ0o?si=Zvz-hfqya0uoiXMB"
-                                                title="YouTube video player" frameborder="0"
-                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                                        </div>
-                                    </div><!-- End slide item -->
+                        </script>
+                    <div class="swiper-wrapper">
+                        @foreach ($facebookLinks as $link)
+                            <div class="swiper-slide">
+                                <div class="video-item"
+                                    style="box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); padding: 15px; border-radius: 10px; background-color: #fff; margin: 10px;">
+                                    <div class="video-container">
+                                        {!! $link->url !!}
+                                    </div>
                                 </div>
-                                <div class="swiper-pagination"></div>
                             </div>
-                            <div class="swiper-button-prev"></div>
-                            <div class="swiper-button-next"></div>
-                        </div>
+                        @endforeach
                     </div>
+                    <!-- Pagination -->
+                    <div class="swiper-pagination"></div>
+                    <!-- Navigation Buttons -->
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            {{-- <-- /Why Us Section --> --}}
-
-
-            <!-- Features Section -->
-            <section id="features" class="features section py-5">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-7" data-aos="fade-up" data-aos-delay="100">
-                            <h3 class="mb-3">Videos Destacados</h3>
-                            <h4 class="mb-4">Desde TikTok o YouTube</h4>
-
-                            <!-- Cards for Videos -->
-                            <div class="row gy-4">
-                                <iframe
-                                    src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2FAuraBoliviaCoomunicacion%2Fvideos%2F1202187177548002%2F&show_text=false&width=336&t=0"
-                                    width="100%" height="476" style="border:none;overflow:hidden" scrolling="no"
-                                    frameborder="0" allowfullscreen="true"
-                                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                                    allowFullScreen="true">
-                                </iframe>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-5 position-relative" data-aos="zoom-out" data-aos-delay="200">
-                            <div class="phone-wrap">
-                                <img src="assets/img/iphone.png" alt="Phone image" class="img-fluid">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- /Features Section -->
 
 
 
@@ -303,6 +271,29 @@
                 })
                 .catch(error => console.error('Error al cargar la página de noticias:', error));
         }
+    </script>
+    <script>
+        // Inicializar el swiper
+        const swiper = new Swiper('.init-swiper', JSON.parse(document.querySelector('.swiper-config').textContent));
+    </script>
+    <script>
+        // Seleccionar todos los iframes de videos
+        const videos = document.querySelectorAll('iframe');
+
+        // Inicializar el swiper
+        const swiper = new Swiper('.init-swiper', JSON.parse(document.querySelector('.swiper-config').textContent));
+
+        // Detener autoplay cuando el video está en reproducción
+        videos.forEach(video => {
+            video.addEventListener('play', () => {
+                swiper.autoplay.stop();
+            });
+
+            // Reanudar autoplay cuando se pause el video
+            video.addEventListener('pause', () => {
+                swiper.autoplay.start();
+            });
+        });
     </script>
     <script>
         function filterNews() {

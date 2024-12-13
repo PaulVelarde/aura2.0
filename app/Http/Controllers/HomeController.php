@@ -34,8 +34,8 @@ class HomeController extends Controller
         $tipos = Tipo::all();
 
         // Obtener videos de TikTok, Facebook y otros (como Instagram) 
-        $facebookLinks = RedVideo::where('plataforma', 'Facebook')->latest('created_at')->take(3)->get();
-        $tikTokReels = RedVideo::where('plataforma', 'TikTok')->latest('created_at')->take(3)->get();
+        $facebookLinks = RedVideo::where('plataforma', 'Facebook')->latest('created_at')->take(5)->get();
+        $tikTokReels = RedVideo::where('plataforma', 'TikTok')->latest('created_at')->take(1)->get();
 
         // Pasar todos los datos a la vista
         return view('home.index', compact(
