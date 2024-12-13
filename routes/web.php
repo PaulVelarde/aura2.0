@@ -24,14 +24,16 @@ Route::post('/admin/videos', [AdminPanelController::class, 'storeVideo'])->name(
 // Rutas para la página de inicio
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Login y registro
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'store'])->name('login');
-Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
-Route::get('/registro', [AuthController::class, 'showRegistrationForm'])->name('registro');
-Route::post('/register', [UserController::class, 'store'])->name('register');
+
 
 // Página de aterrizaje
 Route::get('/landing', function () {
     return view('landing');
 })->name('landing');
+
+
+
+//login
+Route::get('/login', function () { return view('login'); })->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

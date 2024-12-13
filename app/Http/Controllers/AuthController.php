@@ -1,46 +1,45 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Dotenv\Exception\ValidationException;
 use AuthenticatesUsers;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class AuthController extends Controller
 {
 
 
-    public function showLoginForm()
+    public function login(Request $request)
     {
-        return view('login');
-    }
-
-    public function destroy(Request $request)
-    {
-        Auth::guard('web')->logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return to_route('login')->with('status', 'Sesion expirada');
-    }
-
-    public function store(Request $request)
-    {
-        
-        $credentials = $request->validate([
-            'email' => ['required', 'string', 'email'],
-            'password' => ['required', 'string'],
+        // Validar los datos ingresados
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
         ]);
 
-        if (!Auth::attempt($credentials)) {
-            return back()->withErrors(['email' => 'Credenciales incorrectas'])->withInput();
+        // Intentar autenticar al usuario
+        $user = User::where('email', $request->email)->first();
+
+        if ($user && Hash::check($request->password, $user->password)) {
+            // Guardar usuario en la sesión
+            Auth::login($user, $request->remember);
+
+            // Redirigir a la página inicial
+            return redirect()->route('home');
         }
 
-        // Login 
-        $request->session()->regenerate();
-
-        return redirect()->intended();
+        // Si las credenciales son incorrectas, retornar error
+        return redirect()->back()->with('error', 'Credenciales incorrectas.');
     }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect()->route('login');
+    }
+    
 }
