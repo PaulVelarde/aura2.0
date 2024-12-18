@@ -4,36 +4,51 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NoticiaController;
 use App\Http\Controllers\AdminPanelController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RedVideoController;
+use App\Http\Controllers\TransmisionEnVivoController;
 
-// Rutas para noticias
-Route::get('/noticias', [NoticiaController::class, 'index'])->name('noticias.index');
-Route::get('/noticias/create', [NoticiaController::class, 'create'])->name('noticias.create');
-Route::post('/noticias', [NoticiaController::class, 'store'])->name('noticias.store');
-Route::get('/noticias/{id}', [NoticiaController::class, 'show'])->name('noticias.show');
-Route::get('/noticias/{noticia}/edit', [NoticiaController::class, 'edit'])->name('noticias.edit');
-Route::put('/noticias/{noticia}', [NoticiaController::class, 'update'])->name('noticias.update');
-Route::delete('/noticias/{noticia}', [NoticiaController::class, 'destroy'])->name('noticias.destroy');
-
-// Rutas para el panel de administración
-Route::get('/admin', [AdminPanelController::class, 'index'])->name('admin.index');
-Route::post('/admin/noticias', [AdminPanelController::class, 'storeNews'])->name('aura.store.news');
-Route::post('/admin/videos', [AdminPanelController::class, 'storeVideo'])->name('aura.store.video');
-
-// Rutas para la página de inicio
+// Página de inicio
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+// Rutas de noticias
+Route::prefix('noticias')->name('noticias.')->group(function () {
+    Route::get('/', [NoticiaController::class, 'index'])->name('index');
+    Route::get('/create', [NoticiaController::class, 'create'])->name('create');
+    Route::post('/', [NoticiaController::class, 'store'])->name('store');
+    Route::get('/{id}', [NoticiaController::class, 'show'])->name('show');
+    Route::get('/{noticia}/edit', [NoticiaController::class, 'edit'])->name('edit');
+    Route::put('/{noticia}', [NoticiaController::class, 'update'])->name('update');
+    Route::delete('/{noticia}', [NoticiaController::class, 'destroy'])->name('destroy');
+});
+
+// Rutas del panel de administración
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminPanelController::class, 'index'])->name('index');
+    Route::post('/noticias', [AdminPanelController::class, 'storeNews'])->name('store.news');
+    Route::post('/videos', [AdminPanelController::class, 'storeVideo'])->name('store.video');
+});
+
+// Rutas de multimedia
+Route::prefix('multimedia')->name('multimedia.')->group(function () {
+    Route::get('/videos', [RedVideoController::class, 'videos'])->name('videos');
+    Route::resource('red_videos', RedVideoController::class);
+});
+
+// Rutas de transmisiones en vivo
+Route::prefix('transmision')->name('transmision.')->group(function () {
+    Route::get('/', [TransmisionEnVivoController::class, 'show'])->name('show');
+    Route::post('/activar', [TransmisionEnVivoController::class, 'activate'])->name('activate');
+    Route::post('/finalizar', [TransmisionEnVivoController::class, 'deactivate'])->name('deactivate');
+});
 
 
 // Página de aterrizaje
-Route::get('/landing', function () {
-    return view('landing');
-})->name('landing');
+Route::view('/landing', 'landing')->name('landing');
 
-
-
-//login
-Route::get('/login', function () { return view('login'); })->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+// Rutas de autenticación
+Route::prefix('auth')->group(function () {
+    Route::get('/login', fn() => view('login'))->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+});
