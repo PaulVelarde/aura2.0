@@ -13,7 +13,7 @@
                     <div class="card-body">
                         <h2 class="card-title mb-4">Añadir Noticia</h2>
 
-                        <form action="{{ route('aura.store.news') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('login') }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             <!-- Campo Titular -->
@@ -60,7 +60,7 @@
                     <div class="card-body">
                         <h2 class="card-title mb-4">Añadir Videos Redes Sociales</h2>
 
-                        <form action="{{ route('aura.store.video') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('admin.store.video') }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             <!-- Campo Título -->

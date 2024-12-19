@@ -28,6 +28,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('/noticias', [AdminPanelController::class, 'storeNews'])->name('store.news');
     Route::post('/videos', [AdminPanelController::class, 'storeVideo'])->name('store.video');
 });
+  
 
 // Rutas de multimedia
 Route::prefix('multimedia')->name('multimedia.')->group(function () {
