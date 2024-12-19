@@ -7,7 +7,7 @@
     <main class="main">
 
         <div class="page-title dark-background"
-            style="background-image: url('{{ asset('assets/img/blog-page-title-bg.jpg') }}');">
+            style="background-image: url('{{ asset('assets/img/noticias/banner.jpg') }}');">
             <div class="container">
                 <h1>Blog</h1>
                 <nav class="breadcrumbs">

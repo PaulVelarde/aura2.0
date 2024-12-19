@@ -8,7 +8,7 @@
 
         <!-- Page Title -->
         <div class="page-title dark-background" data-aos="fade"
-            style="background-image: url(assets/img/blog-page-title-bg.jpg);">
+            style="background-image: url(assets/img/noticias/banner.png);">
             <div class="container">
                 <h1>Blog Details</h1>
                 <nav class="breadcrumbs">
