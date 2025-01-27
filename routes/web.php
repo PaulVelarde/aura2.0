@@ -1,11 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NoticiaController;
-use App\Http\Controllers\AdminPanelController;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RedVideoController;
+use App\Http\Controllers\AdminPanelController;
+use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\TransmisionEnVivoController;
 
 // Página de inicio
@@ -30,7 +31,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 });
 
 // Rutas de multimedia
-Route::prefix('multimedia')->name('multimedia.')->group(function () {
+Route::prefix('multimedia')->name('multimedia.')->group(function (): void {
     Route::get('/videos', [RedVideoController::class, 'videos'])->name('videos');
     Route::resource('red_videos', RedVideoController::class);
 });
@@ -52,3 +53,7 @@ Route::prefix('auth')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
+
+
+// team
+Route::get('/team', [TeamMemberController::class, 'index'])->name('team.index');

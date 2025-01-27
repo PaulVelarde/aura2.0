@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container py-5">
-        <h1 class="text-center mb-5" style="color: #0e3271;">Videos de Noticias</h1>
+       
 
         <!-- Transmisión en vivo de YouTube -->
         <div class="my-4" style="display: {{ $liveVideo ? 'block' : 'none' }}">

@@ -9,8 +9,12 @@ use App\Models\TransmisionEnVivo;
 
 class RedVideoController extends Controller
 {
+    
     public function index()
     {
+        $transmisionEnVivo = TransmisionEnVivo::where('estado', 1)->first();
+        $isLive = $transmisionEnVivo ? true : false;
+
         // Obtener todos los videos con su relación con tipo y usuario
         $redVideos = RedVideo::with(['tipo', 'user'])->get();
         return view('red_videos.index', compact('redVideos'));

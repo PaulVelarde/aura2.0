@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Tipo;
 use Illuminate\Http\Request;
+use App\Models\TransmisionEnVivo;
 
 class TipoController extends Controller
 {
     public function index()
     {
+        $transmisionEnVivo = TransmisionEnVivo::where('estado', 1)->first();
+        $isLive = $transmisionEnVivo ? true : false;
+
         $tipos = Tipo::all();
         return view('tipos.index', compact('tipos'));
     }

@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Noticia;
+use Carbon\Carbon;
 use App\Models\Tipo;
 use App\Models\User;
+use App\Models\Noticia;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
+use App\Models\TransmisionEnVivo;
 
 
 
@@ -16,6 +17,8 @@ class NoticiaController extends Controller
     
     public function index(Request $request)
 {
+   
+
     $query = $request->input('query');
     $categoria = $request->input('categoria');
 
@@ -68,14 +71,15 @@ class NoticiaController extends Controller
     }
 
     public function show($id)
-{
-    $noticia = Noticia::findOrFail($id);
-
-    // Verifica si es una instancia de Carbon
-   // dd($noticia->fecha);
-
-    return view('news.noticias_details', compact('noticia'));
-}
+    {
+        $noticia = Noticia::findOrFail($id);
+    
+        // Obtener las últimas noticias (puedes ajustar el número de noticias que desees)
+        $recentNews = Noticia::orderBy('fecha', 'desc')->take(5)->get();
+    
+        // Pasar las variables a la vista
+        return view('news.noticias_details', compact('noticia', 'recentNews'));
+    }
     
     public function edit(Noticia $noticia)
     {

@@ -779,6 +779,13 @@ section,
   }
 }
 
+.highlight {
+  color: #ff0000; /* Por ejemplo, resaltar con color rojo */
+  font-weight: bold; /* O con negritas */
+  text-decoration: underline;
+}
+
+
 .hero:before {
   position: absolute;
   content: "";

@@ -11,15 +11,20 @@ class TransmisionEnVivoController extends Controller
     /**
      * Mostrar la transmisión en vivo actual si está activa.
      */
-    public function show()
+    
+     public function show()
     {
+        $transmisionEnVivo = TransmisionEnVivo::where('estado', 1)->first();
+        $isLive = $transmisionEnVivo ? true : false;
+
+        // Buscar la transmisión activa
         $transmision = TransmisionEnVivo::where('estado', 1)->first();
 
-        if ($transmision) {
-            return response()->json($transmision);
-        }
+        // Determinar si hay transmisión en vivo activa
+        $isLive = $transmision ? true : false;
 
-        return response()->json(['message' => 'No hay transmisión en vivo activa.'], 404);
+        // Pasar la variable isLive a la vista
+        return view('nombre-de-tu-vista', compact('isLive'));
     }
 
     /**

@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Periodista;
 use Illuminate\Http\Request;
+use App\Models\TransmisionEnVivo;
 
 class PeriodistaController extends Controller
 {
     public function index()
     {
+        $transmisionEnVivo = TransmisionEnVivo::where('estado', 1)->first();
+        $isLive = $transmisionEnVivo ? true : false;
+
         $periodistas = Periodista::all();
         return view('periodistas.index', compact('periodistas'));
     }
