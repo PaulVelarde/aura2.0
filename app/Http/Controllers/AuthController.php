@@ -19,27 +19,27 @@ class AuthController extends Controller
 
 
     public function login(Request $request)
-    {
-        // Validar los datos ingresados
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+{
+    // Validar los datos ingresados
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-        // Intentar autenticar al usuario
-        $user = User::where('email', $request->email)->first();
+    // Intentar autenticar al usuario
+    $user = User::where('email', $request->email)->first();
 
-        if ($user && Hash::check($request->password, $user->password)) {
-            // Guardar usuario en la sesión
-            Auth::login($user, $request->remember);
+    if ($user && Hash::check($request->password, $user->password)) {
+        // Guardar usuario en la sesión
+        Auth::login($user, $request->remember);
 
-            // Redirigir a la página inicial
-            return redirect()->route('home');
-        }
-
-        // Si las credenciales son incorrectas, retornar error
-        return redirect()->back()->with('error', 'Credenciales incorrectas.');
+        // Redirigir a la página inicial o a la página protegida solicitada
+        return redirect()->intended(route('admin.index'));
     }
+
+    // Si las credenciales son incorrectas, retornar error
+    return redirect()->back()->with('error', 'Credenciales incorrectas.');
+}
 
     public function logout()
     {
